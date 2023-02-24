@@ -61,13 +61,13 @@
                     <?php endwhile ?>
                 </select>
     
-                <?php
-                
-                $conexion = null;
-            }
+            <?php }
+
         } catch (PDOException $e) {
             echo '<br>Error al ejecutar la consulta de selección.';
-            // die();
+            // die(); // TODO: Terminar
+        } finally {
+            $conexion = null;
         }
         
     }

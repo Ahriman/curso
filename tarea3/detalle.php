@@ -2,18 +2,21 @@
 
     // detalle.php. Mostrará todo los detalles del producto seleccionado. 
 
-    if(!isset($_GET['id']) || !is_numeric($_GET['id']) 
+    // Se comprueba si viene el id por GET, si este es numérico y si hay conexión, sino se redirecciona a listado.php
+    require_once('conexion.php');
+    if(!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($conexion)
         //  || !isset($_SERVER['HTTP_REFERER']) // Descomentar si queremos que redireccione en caso de introducir un ID a mano en la URL sin un referer
     ){
         header('Location: listado.php');
+        $conexion = null;
     }
-
-    require_once('conexion.php');
 
     $id = $_GET['id'];
 
     $consultaSQL = 'SELECT * FROM productos WHERE id = :id ORDER BY nombre';
 
+    $producto = null;
+    $mensajeAlerta = "No existe ningún producto con el ID $id.";
     try {
         $stmt = $conexion->prepare($consultaSQL);
         $stmt->bindParam(":id", $id);
@@ -22,12 +25,10 @@
             $producto = $stmt->fetch(PDO::FETCH_OBJ);
         }
     } catch (PDOException $e) {
-        echo 'Error al ejecutar la consulta de selección.';
-        die();
+        $mensajeAlerta = miGestorDeErrores('ERROR SQL', null, $e->getCode());
     } finally {
-        if ($conexion != null) {
-            $conexion = null;
-        }
+        $stmt = null;
+        $conexion = null;
     }
 
 ?>
@@ -71,7 +72,7 @@
         <?php else : 
             require('js/alerta.php');
             if($producto == null) {
-                configurarAlerta($conexionOk, "No existe un producto con el ID $id.", null);
+                configurarAlerta(false, $mensajeAlerta, null);
             }
         endif; ?>
 

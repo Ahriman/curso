@@ -4,11 +4,12 @@
         mensaje de información y un botón volver para volver a "listado.php". 
     */
 
-    if(!isset($_POST['id'])){
+    require('conexion.php');
+
+    // Se comprueba si viene el id por GET, si este es numérico y si hay conexión, sino se redirecciona a listado.php
+    if(!isset($_POST['id']) || !isset($conexion)){
         header('Location: listado.php');
     }
-
-    require('conexion.php');
 
     $id = $_POST['id'];
 
@@ -24,9 +25,8 @@
         echo 'Error al ejecutar la consulta de borrado.';
         die();
     } finally {
-        if ($conexion != null) {
-            $conexion = null;
-        }
+        $stmt = null;
+        $conexion = null;
     }
 
 ?>

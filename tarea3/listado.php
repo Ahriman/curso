@@ -6,10 +6,14 @@
     
     require_once('conexion.php');
 
-    if ($conexion == null) {
-        $conexionOk = false;
+    if (isset($conexion)) {
+        if ($conexion == null) {
+            $conexionOk = false;
+        } else {
+            $conexionOk = true;
+        }
     } else {
-        $conexionOk = true;
+        $conexionOk = false;
     }
 
     function mostrarTabla($conexion){ ?>
@@ -86,7 +90,7 @@
                 configurarAlerta($conexionOk, 'Se ha conectado a la base de datos correctamente.', 2000);
                 mostrarTabla($conexion);
             } else {
-                configurarAlerta($conexionOk, 'No se ha podido conectar a la base de datos.', null);
+                configurarAlerta($conexionOk, $mensajeAlerta, null);
             }
         ?>
 
