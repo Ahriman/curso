@@ -170,7 +170,7 @@
     <?php 
         if (isset($_POST['crear'])) {
         
-            require('componentes/alerta.php');
+            require('js/alerta.php');
             if($insertado) {
                 configurarAlerta($insertado, 'Se ha añadido el producto correctamente.', 5000);
             } else {

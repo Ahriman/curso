@@ -202,7 +202,7 @@
     <?php 
         if (isset($_POST['modificar'])) {
         
-            require('componentes/alerta.php');
+            require('js/alerta.php');
             if($modificado) {
                 configurarAlerta($modificado, 'Se ha modificado el producto correctamente.', 10000);
             } else {

@@ -82,7 +82,7 @@
         <div id="liveAlertPlaceholder" class="row mt-2"></div>
 
         <?php 
-            require('componentes/alerta.php');
+            require('js/alerta.php');
             if($conexionOk) {
                 configurarAlerta($conexionOk, 'Se ha conectado a la base de datos correctamente.', 2000);
                 mostrarTabla($conexion);

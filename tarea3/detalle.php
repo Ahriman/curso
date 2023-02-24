@@ -54,32 +54,27 @@
 
         <div id="liveAlertPlaceholder" class="row mt-3"></div>
         
-        <?php
-
-            if ($producto != null) : ?>
+        <?php if ($producto != null) : ?>
                 
-                <div class="card fondo mt-2 mb-3 mx-auto fs-5" style="max-width: 70rem;">
-                    <div class="card-header text-center"><?=$producto->nombre?></div>
-                    <div class="card-body">
-                        <p class="card-text text-center"><span class="fs-5">Codigo: <?=$producto->id?></p>
+            <div class="card fondo mt-2 mb-3 mx-auto fs-5" style="max-width: 70rem;">
+                <div class="card-header text-center"><?=$producto->nombre?></div>
+                <div class="card-body">
+                    <p class="card-text text-center"><span class="fs-5">Codigo: <?=$producto->id?></p>
 
-                        <p class="card-text">Nombre: <?=$producto->nombre?></p>
-                        <p class="card-text">Nombre Corto: <?=$producto->nombre_corto?></p>
-                        <p class="card-text">Codigo Familia: <?=$producto->familia?></p>
-                        <p class="card-text">PVP (€): <?=$producto->pvp?></p>
-                        <p class="card-text">Descripción: <?=$producto->descripcion?></p>
-                    </div>
+                    <p class="card-text">Nombre: <?=$producto->nombre?></p>
+                    <p class="card-text">Nombre Corto: <?=$producto->nombre_corto?></p>
+                    <p class="card-text">Codigo Familia: <?=$producto->familia?></p>
+                    <p class="card-text">PVP (€): <?=$producto->pvp?></p>
+                    <p class="card-text">Descripción: <?=$producto->descripcion?></p>
                 </div>
+            </div>
                 
-            <?php else : 
-                    require('componentes/alerta.php');
-                    if($producto == null) {
-                        configurarAlerta($conexionOk, "No existe un producto con el ID $id.", null);
-                    }
-                ?>
-            <?php endif;
-
-        ?>
+        <?php else : 
+            require('js/alerta.php');
+            if($producto == null) {
+                configurarAlerta($conexionOk, "No existe un producto con el ID $id.", null);
+            }
+        endif; ?>
 
         <div class="mt-4 text-center">
             <a href="listado.php"><button type="button" class="btn btn-info text-white btn-lg ms-3">Volver</button></a>
