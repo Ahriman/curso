@@ -39,26 +39,23 @@
                 $modificado = true;
             }
         } catch (PDOException $e) {
-            // TODO: Mejorar mensajes de error
+            // TODO: Mejorar mensajes de error ?
             // echo "\nPDO::errorCode(): ", $stmt->errorCode();
             echo "<br>Error al actualizar el producto: " . $e->getMessage();
             
-        } catch (Throwable $e) {
+        } catch (Throwable $e) { // TODO: Arreglar los try catch
             // echo "<br>Error al actualizar el producto: " . $e->getMessage();
             // echo "\nException: ", $stmt->errorCode();
-            var_dump($stmt);
+            // var_dump($stmt);
         } finally {
             // $conexion = null;
         }
-
-        
 
         // if ($resultado) { 
             
         //     $conexion = null;
         // }
     }
-
 
     // Inicio obtener producto
     require('conexion.php');
@@ -78,8 +75,7 @@
         // echo "\nPDO::errorCode(): ", $stmt->errorCode();
         echo "<br>Error al actualizar el producto: " . $e->getMessage();
         // $insertado = false;
-    } catch (Throwable $e) {
-        echo 'Que pasa';
+    } catch (Throwable $e) { // TODO: Arreglar los try catch
         echo "\nException: ", $stmt->errorCode();
     } finally {
         // $conexion = null; // TODO: Si cierro la conexion, no puedo usarla más abajo

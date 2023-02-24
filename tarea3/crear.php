@@ -6,14 +6,9 @@
         elegir uno (lógicamente aunque mostremos los nombres por formulario enviaremos el código).
     */
     $insertado = false;
-    // if(isset($_POST['reset'])){
-    //     unset($_POST);
-    //     $_POST = [];
-    //     $insertado = false;
-    //     header('Location: listado.php');
-    // }
 
-    // && isset($_POST['nombre_corto']) && isset($_POST['precio']) && isset($_GET['familia']) && isset($_GET['descripcion'])
+    // TODO: Comprobar en el lado servidor que los datos son correctos
+    // && isset($_POST['nombre_corto']) && isset($_POST['precio']) && isset($_POST['familia']) && isset($_POST['descripcion'])
     if (isset($_POST['crear'])) {
         $nombre = $_POST['nombre'];
         $nombre_corto = $_POST['nombre_corto'];
@@ -25,11 +20,8 @@
 
         $consultaSQL = 'INSERT INTO productos (nombre, nombre_corto, pvp, familia, descripcion) 
                             VALUES (:nombre, :nombre_corto, :precio, :familia, :descripcion)';
-
-        // $insertado = false;
+                            
         try {
-            // $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
-            // echo $conexion;
             $stmt = $conexion->prepare($consultaSQL);
             $stmt->bindParam(":nombre", $nombre);
             $stmt->bindParam(":nombre_corto", $nombre_corto);
@@ -52,8 +44,6 @@
         } finally {
             // $conexion = null;
         }
-
-        
         
     }
 
@@ -62,7 +52,7 @@
 
         // TODO: Utilizar try catch
         // TODO: Comprobar si ya existe el producto por el NOMBRE_CORTO
-        // TODO: Hacerlo con consultas preparadas
+        // TODO: Hacerlo con consultas preparadas ???
 
         $resultado = $conexion->query('SELECT * FROM familias ORDER BY nombre');
 
@@ -163,7 +153,6 @@
         </div>
 
     </div>
-    
 
     <?php require('js/bootstrap_js.inc.php') ?>
 
