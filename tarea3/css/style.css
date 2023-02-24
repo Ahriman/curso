@@ -1,0 +1,30 @@
+body {
+    background-color: #4dd0e1;
+}
+
+.fondo {
+    background: #17a2b8;
+}
+
+.fondo {
+    background: #17a2b8;
+    color: #fff;
+}
+
+/* Ha cambiado el color btn-info en Bootstrap 5 */
+.btn-info {
+    background: #17a2b8;
+}
+
+.btn-info:hover {
+    background: #1692a5;
+}
+
+/* Con CSS se puede ajustar mejor el tamaño que con HTML
+    rows="12" 
+    cols="50" 
+*/
+textarea {
+    width: 300px;
+    height: 310px;
+}
