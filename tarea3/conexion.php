@@ -1,5 +1,6 @@
 <?php
     
+    // TODO: Asignar permisos al archivo ?
     $host = "localhost";
     $db = "proyecto";
     $user = "gestor";
@@ -9,12 +10,9 @@
 
     try {
         $conexion = new PDO($dsn, $user, $pass);
-        // $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
-        // $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    
     } catch (PDOException $e) {
-        // print "¡Error!: " . $e->getMessage() . "<br/>";
-        // die();
+        print 'No se ha podido conectar a la base de datos.';
+        die();
     }
     
 ?>
