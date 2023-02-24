@@ -35,43 +35,44 @@
             }
             
         } catch (PDOException $e) {
-            // TODO: Mejorar mensajes de error
-            // echo "\nPDO::errorCode(): ", $stmt->errorCode();
-            echo "<br>Error al insertar el producto: " . $e->getMessage();
-            
-        } catch (Throwable $e) {
-            echo "\nException: ", $stmt->errorCode();
+            echo '<br>Error al ejecutar la consulta de inserción. ' . $e->getMessage();
+            // die();
         } finally {
-            // $conexion = null;
+            //Cerrramos conexiones.
+            $stmt = null; // TODO: Cerrar bien las conexiones en todo el proyecto
+            $conexion = null;
         }
         
     }
 
     function mostrarSelectFamilias() {
+
         require('conexion.php');
 
-        // TODO: Utilizar try catch
-        // TODO: Comprobar si ya existe el producto por el NOMBRE_CORTO
-        // TODO: Hacerlo con consultas preparadas ???
+        try {
 
-        $resultado = $conexion->query('SELECT * FROM familias ORDER BY nombre');
+            $resultado = $conexion->query('SELECT * FROM familias ORDER BY nombre');
 
-        if ($resultado) { ?>
+            if ($resultado) { ?>
             
-            <select class="form-select" id="familia" name="familia">
-                <?php while ($familia = $resultado->fetchObject()) : ?>
-                    <option value="<?=$familia->cod?>"><?=$familia->nombre?></option>
-                <?php endwhile ?>
-            </select>
-
-            <?php
-            
-            $conexion = null;
+                <select class="form-select" id="familia" name="familia">
+                    <?php while ($familia = $resultado->fetchObject()) : ?>
+                        <option value="<?=$familia->cod?>"><?=$familia->nombre?></option>
+                    <?php endwhile ?>
+                </select>
+    
+                <?php
+                
+                $conexion = null;
+            }
+        } catch (PDOException $e) {
+            echo '<br>Error al ejecutar la consulta de selección.';
+            // die();
         }
+        
     }
 
 ?>
-
 
 
 

@@ -22,9 +22,8 @@
             $producto = $stmt->fetch(PDO::FETCH_OBJ);
         }
     } catch (PDOException $e) {
-        // TODO: Mejorar mensajes de error y ser específico
-    } catch (Throwable $e) {
-        echo "\nException: ", $stmt->errorCode();
+        echo 'Error al ejecutar la consulta de selección.';
+        die();
     } finally {
         if ($conexion != null) {
             $conexion = null;

@@ -39,22 +39,12 @@
                 $modificado = true;
             }
         } catch (PDOException $e) {
-            // TODO: Mejorar mensajes de error ?
-            // echo "\nPDO::errorCode(): ", $stmt->errorCode();
-            echo "<br>Error al actualizar el producto: " . $e->getMessage();
-            
-        } catch (Throwable $e) { // TODO: Arreglar los try catch
-            // echo "<br>Error al actualizar el producto: " . $e->getMessage();
-            // echo "\nException: ", $stmt->errorCode();
-            // var_dump($stmt);
+            echo 'Error al ejecutar la consulta de actualización.';
+            // die();
         } finally {
-            // $conexion = null;
+            $conexion = null;
         }
 
-        // if ($resultado) { 
-            
-        //     $conexion = null;
-        // }
     }
 
     // Inicio obtener producto
@@ -65,20 +55,15 @@
     $consultaSQL = 'SELECT * FROM productos WHERE id = :id';
 
     try {
-        // $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
         $stmt = $conexion->prepare($consultaSQL);
         $stmt->bindParam(":id", $id);
         $resultado = $stmt->execute();
         $producto = $stmt->fetch(PDO::FETCH_OBJ);
     } catch (PDOException $e) {
-        // TODO: Mejorar mensajes de error
-        // echo "\nPDO::errorCode(): ", $stmt->errorCode();
-        echo "<br>Error al actualizar el producto: " . $e->getMessage();
-        // $insertado = false;
-    } catch (Throwable $e) { // TODO: Arreglar los try catch
-        echo "\nException: ", $stmt->errorCode();
+        echo 'Error al ejecutar la consulta de selección.';
+        die();
     } finally {
-        // $conexion = null; // TODO: Si cierro la conexion, no puedo usarla más abajo
+        // $conexion = null; // TODO: Da un error el IDE más abajo, pero funciona correctamente si lo descomento.
     }
     // Fin obtener producto
     
@@ -154,7 +139,7 @@
                 <div class="col-6 mt-3">
                     <label class="form-label" for="familia">Familia</label>
                     <?php 
-                    
+                        require('conexion.php');
                         $consultaFamilias = $conexion->query("SELECT * FROM familias ORDER BY nombre");
 
                         if ($consultaFamilias) { ?>
@@ -198,7 +183,7 @@
     <?php 
         if (isset($_POST['modificar'])) {
         
-            require('js/alerta.php');
+            require_once('js/alerta.php');
             if($modificado) {
                 configurarAlerta($modificado, 'Se ha modificado el producto correctamente.', 10000);
             } else {

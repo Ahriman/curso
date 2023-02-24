@@ -21,14 +21,8 @@
         $stmt->execute();
         if ($stmt->rowCount() == 1) $borrado = true;
     } catch (PDOException $e) {
-        // TODO: Mejorar mensajes de error y ser específico
-        echo "Error al borrar el producto: " . $e->getMessage();
-        // TODO: Mejorar mensajes de error
-        // echo "\nPDO::errorCode(): ", $stmt->errorCode();
-        echo "<br>Error al insertar el producto: " . $e->getMessage();
-        
-    } catch (Throwable $e) {
-        echo "\nException: ", $stmt->errorCode();
+        echo 'Error al ejecutar la consulta de borrado.';
+        die();
     } finally {
         if ($conexion != null) {
             $conexion = null;

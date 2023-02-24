@@ -46,8 +46,7 @@
                                 </td>
                             </tr>
                         <?php endwhile;
-                    } catch (\Throwable $e) {
-                        # code...
+                    } catch (\Throwable $e) { // TODO: Crear la excepción correcta
                         // die();
                     } finally {
                         $conexion = null;
