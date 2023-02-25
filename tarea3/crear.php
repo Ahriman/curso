@@ -5,7 +5,10 @@
         Para la familia nos aparecerá un "select" con los nombres de las familias de los productos para 
         elegir uno (lógicamente aunque mostremos los nombres por formulario enviaremos el código).
     */
+    
     $insertado = false;
+    $mensajeAlerta = false;
+    $error = false;
 
     // TODO: Comprobar en el lado servidor que los datos son correctos
     // && isset($_POST['nombre_corto']) && isset($_POST['precio']) && isset($_POST['familia']) && isset($_POST['descripcion'])
@@ -31,21 +34,20 @@
             $stmt->execute();
             if ($stmt->rowCount() == 1) {
                 $insertado = true;
-                // header('Location: crear.php');
             }
             
         } catch (PDOException $e) {
-            echo '<br>Error al ejecutar la consulta de inserción. ' . $e->getMessage();
-            // die();
+            $mensajeAlerta = miGestorDeErrores('ERROR SQL', null, $e->getCode());
+            $error = true;
         } finally {
-            //Cerrramos conexiones.
-            $stmt = null; // TODO: Cerrar bien las conexiones en todo el proyecto
+            //Cerramos conexiones.
+            $stmt = null;
             $conexion = null;
         }
         
     }
 
-    function mostrarSelectFamilias() {
+    function mostrarSelectFamilias(&$mensajeAlerta, &$error) {
 
         require('conexion.php');
 
@@ -65,7 +67,8 @@
 
         } catch (PDOException $e) {
             echo '<br>Error al ejecutar la consulta de selección.';
-            // die(); // TODO: Terminar
+            $mensajeAlerta = miGestorDeErrores('ERROR SQL', null, $e->getCode());
+            $error = true;
         } finally {
             $conexion = null;
         }
@@ -92,8 +95,7 @@
     <div class="container">
 
         <div class="row mt-2">
-
-            <!-- TODO: Arreglar tamaño -->
+            
             <h1 class="text-center">Crear Producto</h1>
 
             <div id="liveAlertPlaceholder" class="row mt-2"></div>
@@ -131,7 +133,7 @@
 
                 <div class="col-6 mt-3">
                     <label class="form-label" for="familia">Familia</label>
-                    <?php mostrarSelectFamilias() ?>
+                    <?php mostrarSelectFamilias($mensajeAlerta, $error) ?>
                 </div>
 
                 <div class="col-9 mt-3">
@@ -156,11 +158,14 @@
     </div>
 
     <?php require('js/bootstrap_js.inc.php') ?>
-
     <?php 
-        if (isset($_POST['crear'])) {
-        
-            require('js/alerta.php');
+        require('js/alerta.php');
+        if($error) {
+
+            configurarAlerta(false, $mensajeAlerta, null);
+
+        } elseif (isset($_POST['crear'])) {
+
             if($insertado) {
                 configurarAlerta($insertado, 'Se ha añadido el producto correctamente.', 5000);
             } else {

@@ -16,14 +16,15 @@
     $consultaSQL = 'DELETE FROM productos WHERE id = :id';
     
     $borrado = false;
+    $error = false;
     try {
         $stmt = $conexion->prepare($consultaSQL);
         $stmt->bindParam(":id", $id);
         $stmt->execute();
         if ($stmt->rowCount() == 1) $borrado = true;
     } catch (PDOException $e) {
-        echo 'Error al ejecutar la consulta de borrado.';
-        die();
+        $mensajeAlerta = miGestorDeErrores('ERROR SQL', null, $e->getCode());
+        $error = true;
     } finally {
         $stmt = null;
         $conexion = null;
@@ -43,6 +44,15 @@
 </head>
 <body>
 
+    <div id="liveAlertPlaceholder" class="row p-2"></div>
+
+    <?php 
+        require('js/alerta.php');
+        if($error) {
+            configurarAlerta(false, $mensajeAlerta, null);
+        }
+    ?>
+
     <div class="p-2">
         <?php if ($borrado) : ?>
             <strong>Producto de Código: <?=$id?> Borrado correctamente.</strong>
@@ -52,5 +62,6 @@
         <a href="listado.php"><button type="button" class="btn btn-outline-dark btn-sm">Volver</button></a>
     </div>
     
+    <?php require('js/bootstrap_js.inc.php') ?>
 </body>
 </html>

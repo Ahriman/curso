@@ -2,7 +2,7 @@
 
     require_once('gestor_errores.php');
 
-    // set_error_handler("miGestorDeErrores");
+    // set_error_handler("miGestorDeErrores"); // TODO: ARREGLAR
 
 
     

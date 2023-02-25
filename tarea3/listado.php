@@ -11,12 +11,23 @@
             $conexionOk = false;
         } else {
             $conexionOk = true;
+            $error = false;
+            try {
+                $resultado = $conexion->query('SELECT id, nombre FROM productos ORDER BY nombre');
+            } catch (PDOException $e) {
+                $mensajeAlerta = miGestorDeErrores('ERROR SQL', null, $e->getCode());
+                $error = true;
+            } finally {
+                $conexion = null;
+            }
         }
     } else {
         $conexionOk = false;
     }
 
-    function mostrarTabla($conexion){ ?>
+    
+    
+    function mostrarTabla($resultado){ ?>
 
         <table class="table table-dark table-striped mt-2 text-center">
             <thead>
@@ -31,30 +42,23 @@
                 </tr>
                 <?php
                 
-                    try {
-                        $resultado = $conexion->query('SELECT id, nombre FROM productos ORDER BY nombre');
-                        while ($producto = $resultado->fetchObject()) : ?>
-                            <tr>
-                                <td><a href="detalle.php?id=<?=$producto->id?>"><button type="button" class="btn btn-info text-white">Detalle</button></a></td>
-                                <td><?=$producto->id?></td>
-                                <td><?=$producto->nombre?></td>
-                                <td>
-                                    <div class="d-inline-flex">
-                                        <a href="update.php?id=<?=$producto->id?>"><button type="button" class="btn btn-warning">Actualizar</button></a>
-                                        <form method="POST" action="borrar.php" class="form-inline ms-2">
-                                            <input type="hidden" value="<?=$producto->id?>" name="id" />
-                                            <button type="submit" class="btn btn-danger">Borrar</button>
-                                        </form>
-                                    </div>
-                                    
-                                </td>
-                            </tr>
-                        <?php endwhile;
-                    } catch (\Throwable $e) { // TODO: Crear la excepción correcta
-                        // die();
-                    } finally {
-                        $conexion = null;
-                    }
+                while ($producto = $resultado->fetchObject()) : ?>
+                    <tr>
+                        <td><a href="detalle.php?id=<?=$producto->id?>"><button type="button" class="btn btn-info text-white">Detalle</button></a></td>
+                        <td><?=$producto->id?></td>
+                        <td><?=$producto->nombre?></td>
+                        <td>
+                            <div class="d-inline-flex">
+                                <a href="update.php?id=<?=$producto->id?>"><button type="button" class="btn btn-warning">Actualizar</button></a>
+                                <form method="POST" action="borrar.php" class="form-inline ms-2">
+                                    <input type="hidden" value="<?=$producto->id?>" name="id" />
+                                    <button type="submit" class="btn btn-danger">Borrar</button>
+                                </form>
+                            </div>
+                            
+                        </td>
+                    </tr>
+                <?php endwhile;
                 
                 ?>
             </tbody>
@@ -87,10 +91,13 @@
         <?php 
             require('js/alerta.php');
             if($conexionOk) {
-                configurarAlerta($conexionOk, 'Se ha conectado a la base de datos correctamente.', 2000);
-                mostrarTabla($conexion);
+                if(!$error) {
+                    mostrarTabla($resultado);
+                } else {
+                    configurarAlerta(false, $mensajeAlerta, null);
+                }
             } else {
-                configurarAlerta($conexionOk, $mensajeAlerta, null);
+                configurarAlerta(false, $mensajeAlerta, null);
             }
         ?>
 

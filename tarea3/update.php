@@ -5,21 +5,18 @@
         desde "listado.php" incluido el select donde seleccionamos la familia
     */
 
-    // Se comprueba si viene el id por GET, si este es numérico (si permitimos meterlo a mano en la URL) y si hay conexión, sino se redirecciona a listado.php
-    require('conexion.php');
-    if(!isset($_GET['id']) || !is_numeric($_GET['id']) || !isset($conexion)
+    // Se comprueba si viene el id por GET y si este es numérico (si permitimos meterlo a mano en la URL) sino se redirecciona a listado.php
+    // require('conexion.php');
+    if(!isset($_GET['id']) || !is_numeric($_GET['id'])
         //  || !isset($_SERVER['HTTP_REFERER']) // Descomentar si queremos que redireccione en caso de introducir un ID a mano en la URL sin un referer
     ){
         header('Location: listado.php');
         $conexion = null;
     }
-    /*  Da un error el IDE más abajo, pero funciona correctamente si lo descomento. Ya que uso require('conexion.php'); 
-        cada vez que lo necesito y cierro siempre la conexión. 
 
-        Cuándo usemos POO, no dará ese error. 
-    */
-    // $conexion = null; // También se puede dejar comentadp, pero quedaría la conexión sin cerrar.
-
+    $mensajeAlerta = null;
+    $error = false;
+    // TODO: Comprobar en el lado servidor que los datos son correctos
     if (isset($_POST['modificar'])) {
 
         $id = $_POST['id'];
@@ -37,6 +34,7 @@
                         WHERE id = :id';
         
         $modificado = false;
+        $mensajeAlerta = "No existe ningún producto con el ID $id.";
         try {
             $stmt = $conexion->prepare($consultaSQL);
             $stmt->bindParam(":id", $id);
@@ -50,8 +48,8 @@
                 $modificado = true;
             }
         } catch (PDOException $e) {
-            echo 'Error al ejecutar la consulta de actualización.';
-            // die();
+            $mensajeAlerta = miGestorDeErrores('ERROR SQL', null, $e->getCode());
+            $error = true;
         } finally {
             $stmt = null;
             $conexion = null;
@@ -63,22 +61,28 @@
     // Se ejecuta siempre, antes o después de pulsar en el botón modificar. Así se muestran los datos del formulario actualizados al momento.
     // Inicio obtener producto
     require('conexion.php');
+    if(!isset($conexion)){
+        header('Location: listado.php');
+    }
 
     $id = $_GET['id'];
 
     $consultaSQL = 'SELECT * FROM productos WHERE id = :id';
     
+    $producto = null;
+    $mensajeAlerta = "No existe ningún producto con el ID $id.";
     try {
         $stmt = $conexion->prepare($consultaSQL);
         $stmt->bindParam(":id", $id);
         $resultado = $stmt->execute();
         $producto = $stmt->fetch(PDO::FETCH_OBJ);
     } catch (PDOException $e) {
-        echo 'Error al ejecutar la consulta de selección.';
-        die();
+        $mensajeAlerta = miGestorDeErrores('ERROR SQL', null, $e->getCode());
+        $error = true;
+        // die();
     } finally {
         $stmt = null;
-        $conexion = null; // TODO: Da un error el IDE más abajo, pero funciona correctamente si lo descomento.
+        $conexion = null;
     }
     // Fin obtener producto
     
@@ -102,11 +106,11 @@
     <div class="container">
 
         <div class="row mt-2">
-
-            <!-- TODO: Arreglar tamaño -->
+            
             <h1 class="text-center">Modificar Producto</h1>
 
             <div id="liveAlertPlaceholder" class="row mt-2"></div>
+            
 
             <?php if($producto != null) :?>
                 <form method="POST" class="row mt-2">
@@ -192,10 +196,12 @@
 
             <?php else : 
                 require_once('js/alerta.php');
-                configurarAlerta(false, "No existe el producto con ID $id.", 5000); ?>
-                <div class="mt-3">
-                    <a href="listado.php"><button type="button" class="btn btn-info text-white btn-lg">Volver</button></a>
-                </div>
+                configurarAlerta(false, $mensajeAlerta, null); ?>
+
+                    <div class="mt-3 text-center">
+                        <a href="listado.php"><button type="button" class="btn btn-info text-white btn-lg">Volver</button></a>
+                    </div>
+                
             <?php endif ?>
 
         </div>
@@ -203,11 +209,14 @@
     </div>
     
     <?php require('js/bootstrap_js.inc.php') ?>
-
     <?php 
-        if (isset($_POST['modificar'])) {
-        
-            require_once('js/alerta.php');
+        require_once('js/alerta.php');
+        if($error) {
+
+            configurarAlerta(false, $mensajeAlerta, null);
+
+        } elseif (isset($_POST['modificar'])) {
+
             if($modificado) {
                 configurarAlerta($modificado, 'Se ha modificado el producto correctamente.', 10000);
             } else {

@@ -43,13 +43,16 @@
                     break;
                 //
                 case '42000':
-                    $mensaje = "Error de sintaxis en la consulta SQL.";
+                    $mensaje = "$tipoError: Error de sintaxis en la consulta SQL.";
                     break;             
                 case '42S02':
-                    $mensaje = "La tabla no existe en la base de datos.";
+                    $mensaje = "$tipoError: La tabla no existe en la base de datos.";
                     break;             
                 case '42S22':
-                    $mensaje = "Columna no encontrada.";
+                    $mensaje = "$tipoError: Columna o campo no encontrado.";
+                    break; 
+                case 'HY093':
+                    $mensaje = "$tipoError: Número inválido de parámetros: El parámetro no fue definido.";
                     break; 
                 default:
                     $mensaje = "$tipoError: $mensaje";                
