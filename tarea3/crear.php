@@ -9,40 +9,43 @@
     $insertado = false;
     $mensajeAlerta = false;
     $error = false;
+    
+    if (isset($_POST['crear']) && isset($_POST['nombre']) && isset($_POST['nombre_corto']) && isset($_POST['precio']) 
+        && isset($_POST['familia']) && isset($_POST['descripcion'])) {
 
-    // TODO: Comprobar en el lado servidor que los datos son correctos
-    // && isset($_POST['nombre_corto']) && isset($_POST['precio']) && isset($_POST['familia']) && isset($_POST['descripcion'])
-    if (isset($_POST['crear'])) {
-        $nombre = $_POST['nombre'];
-        $nombre_corto = $_POST['nombre_corto'];
-        $precio = $_POST['precio'];
-        $familia = $_POST['familia'];
-        $descripcion = $_POST['descripcion'];
+        require('comprobacion_datos.inc.php');
 
-        require('conexion.php');
+        if($nombreOk && $nombre_cortoOk && $precioOk && $familiaOk && $descripcionOk) {
 
-        $consultaSQL = 'INSERT INTO productos (nombre, nombre_corto, pvp, familia, descripcion) 
-                            VALUES (:nombre, :nombre_corto, :precio, :familia, :descripcion)';
-                            
-        try {
-            $stmt = $conexion->prepare($consultaSQL);
-            $stmt->bindParam(":nombre", $nombre);
-            $stmt->bindParam(":nombre_corto", $nombre_corto);
-            $stmt->bindParam(":precio", $precio);
-            $stmt->bindParam(":familia", $familia);
-            $stmt->bindParam(":descripcion", $descripcion);
-            $stmt->execute();
-            if ($stmt->rowCount() == 1) {
-                $insertado = true;
+            require('conexion.php');
+
+            $consultaSQL = 'INSERT INTO productos (nombre, nombre_corto, pvp, familia, descripcion) 
+                                VALUES (:nombre, :nombre_corto, :precio, :familia, :descripcion)';
+                                
+            try {
+                $stmt = $conexion->prepare($consultaSQL);
+                $stmt->bindParam(":nombre", $nombre);
+                $stmt->bindParam(":nombre_corto", $nombre_corto);
+                $stmt->bindParam(":precio", $precio);
+                $stmt->bindParam(":familia", $familia);
+                $stmt->bindParam(":descripcion", $descripcion);
+                $stmt->execute();
+                if ($stmt->rowCount() == 1) {
+                    $insertado = true;
+                    $mensajeAlerta = 'Se ha añadido el producto correctamente.';
+                } else {
+                    $mensajeAlerta = 'No se ha podido añadido el producto.';
+                }
+                
+            } catch (PDOException $e) {
+                $mensajeAlerta = miGestorDeErrores('ERROR SQL', null, $e->getCode());
+                $error = true;
+            } finally {
+                // Cerrar conexiones
+                $stmt = null;
+                $conexion = null;
             }
-            
-        } catch (PDOException $e) {
-            $mensajeAlerta = miGestorDeErrores('ERROR SQL', null, $e->getCode());
-            $error = true;
-        } finally {
-            //Cerramos conexiones.
-            $stmt = null;
-            $conexion = null;
+
         }
         
     }
@@ -109,9 +112,12 @@
                         class="form-control" 
                         name="nombre" 
                         id="nombre" 
+                        pattern="\S?([\w-]+[.]?[\s]?)+"
+                        title="El nombre no puede quedar vacío, puede contener letras mayúsculas o minúsculas y números o puntos no consecutivos." 
                         placeholder="Nombre"
                         required>
                 </div>
+
                 <div class="col-6">
                     <label class="form-label" for="nombre_corto">Nombre Corto</label>
                     <input 
@@ -120,15 +126,23 @@
                         name="nombre_corto" 
                         id="nombre_corto" 
                         placeholder="Nombre Corto"
-                        pattern="[A-Z]+[\d]*" 
+                        pattern="[A-Z]+[\d]*"
                         minlength="3"
                         title="Un código en mayúsculas que no empiece por un número" 
                         required>
                 </div>
-
+                
                 <div class="col-6 mt-3">
                     <label class="form-label" for="precio">Precio (€)</label>
-                    <input type="text" class="form-control" name="precio" id="precio" placeholder="Precio (€)" required>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        name="precio" 
+                        id="precio" 
+                        pattern="([0-9]*[.])?[0-9]+"
+                        title="Un número con los decimales separados por un punto" 
+                        placeholder="Precio (€)" 
+                        required>
                 </div>
 
                 <div class="col-6 mt-3">
@@ -161,17 +175,9 @@
     <?php 
         require('js/alerta.php');
         if($error) {
-
             configurarAlerta(false, $mensajeAlerta, null);
-
         } elseif (isset($_POST['crear'])) {
-
-            if($insertado) {
-                configurarAlerta($insertado, 'Se ha añadido el producto correctamente.', 5000);
-            } else {
-                configurarAlerta($insertado, 'No se ha podido añadir el producto.', 10000);
-            }
-
+            configurarAlerta($insertado, $mensajeAlerta, 10000);
         }
     ?>
 

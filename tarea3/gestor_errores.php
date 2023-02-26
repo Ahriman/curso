@@ -54,6 +54,9 @@
                 case 'HY093':
                     $mensaje = "$tipoError: Número inválido de parámetros: El parámetro no fue definido.";
                     break; 
+                case '23000':
+                    $mensaje = "$tipoError: Entrada duplicada. Ya existe ese Nombre Corto.";
+                    break; 
                 default:
                     $mensaje = "$tipoError: $mensaje";                
             }

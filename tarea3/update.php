@@ -16,43 +16,49 @@
 
     $mensajeAlerta = null;
     $error = false;
-    // TODO: Comprobar en el lado servidor que los datos son correctos
-    if (isset($_POST['modificar'])) {
+    $modificado = false;
+    
+    if (isset($_POST['modificar']) && isset($_POST['id']) && isset($_POST['nombre']) && isset($_POST['nombre_corto']) && isset($_POST['precio']) 
+        && isset($_POST['familia']) && isset($_POST['descripcion'])) {
 
         $id = $_POST['id'];
 
-        $nombre = $_POST['nombre'];
-        $nombre_corto = $_POST['nombre_corto'];
-        $precio = $_POST['precio'];
-        $familia = $_POST['familia'];
-        $descripcion = $_POST['descripcion'];
+        require('comprobacion_datos.inc.php');
 
-        require('conexion.php');
+        if($nombreOk && $nombre_cortoOk && $precioOk && $familiaOk && $descripcionOk) {
 
-        $consultaSQL = 'UPDATE productos 
-                        SET nombre = :nombre, nombre_corto = :nombre_corto, pvp = :precio, familia = :familia, descripcion = :descripcion 
-                        WHERE id = :id';
-        
-        $modificado = false;
-        $mensajeAlerta = "No existe ningún producto con el ID $id.";
-        try {
-            $stmt = $conexion->prepare($consultaSQL);
-            $stmt->bindParam(":id", $id);
-            $stmt->bindParam(":nombre", $nombre);
-            $stmt->bindParam(":nombre_corto", $nombre_corto);
-            $stmt->bindParam(":precio", $precio);
-            $stmt->bindParam(":familia", $familia);
-            $stmt->bindParam(":descripcion", $descripcion);
-            $stmt->execute();
-            if ($stmt->rowCount() == 1) {
-                $modificado = true;
+            require('conexion.php');
+
+            $consultaSQL = 'UPDATE productos 
+                            SET nombre = :nombre, nombre_corto = :nombre_corto, pvp = :precio, familia = :familia, descripcion = :descripcion 
+                            WHERE id = :id';
+            
+            $mensajeAlerta = "No existe ningún producto con el ID $id.";
+            try {
+                $stmt = $conexion->prepare($consultaSQL);
+                $stmt->bindParam(":id", $id);
+                $stmt->bindParam(":nombre", $nombre);
+                $stmt->bindParam(":nombre_corto", $nombre_corto);
+                $stmt->bindParam(":precio", $precio);
+                $stmt->bindParam(":familia", $familia);
+                $stmt->bindParam(":descripcion", $descripcion);
+                $stmt->execute();
+                if ($stmt->rowCount() == 1) {
+                    $modificado = true;
+                    $mensajeAlerta = 'Se ha modificado el producto correctamente.';
+                } else {
+                    $mensajeAlerta = 'No se ha podido modificar el producto.';
+                }
+            } catch (PDOException $e) {
+                $mensajeAlerta = miGestorDeErrores('ERROR SQL', null, $e->getCode());
+                $error = true;
+            } finally {
+                $stmt = null;
+                $conexion = null;
             }
-        } catch (PDOException $e) {
-            $mensajeAlerta = miGestorDeErrores('ERROR SQL', null, $e->getCode());
-            $error = true;
-        } finally {
-            $stmt = null;
-            $conexion = null;
+
+        } else {
+            // $mensajeAlerta = "Hay errores en los campos del formulario.";
         }
 
     }
@@ -70,7 +76,7 @@
     $consultaSQL = 'SELECT * FROM productos WHERE id = :id';
     
     $producto = null;
-    $mensajeAlerta = "No existe ningún producto con el ID $id.";
+    // $mensajeAlerta = "No existe ningún producto con el ID $id.";
     try {
         $stmt = $conexion->prepare($consultaSQL);
         $stmt->bindParam(":id", $id);
@@ -128,6 +134,7 @@
                             placeholder="<?=$producto->nombre?>" 
                             required>
                     </div>
+                    
                     <div class="col-6">
                         <label class="form-label" for="nombre_corto">Nombre Corto</label>
                         <input 
@@ -137,12 +144,12 @@
                             id="nombre_corto" 
                             value="<?=$producto->nombre_corto?>" 
                             placeholder="<?=$producto->nombre_corto?>" 
-                            pattern="[A-Z]+[\d]*" 
+                            pattern="[A-Z]+[\d]*"
                             minlength="3"
                             title="Un código en mayúsculas que no empiece por un número" 
                             required>
                     </div>
-
+                    
                     <div class="col-6 mt-3">
                         <label class="form-label" for="precio">Precio (€)</label>
                         <input 
@@ -151,7 +158,7 @@
                             name="precio" 
                             id="precio" 
                             value="<?=$producto->pvp?>" 
-                            pattern="([0-9]*[.])?[0-9]+" 
+                            pattern="([0-9]*[.])?[0-9]+"
                             title="Un número con los decimales separados por un punto" 
                             required>
                     </div>
@@ -212,17 +219,9 @@
     <?php 
         require_once('js/alerta.php');
         if($error) {
-
             configurarAlerta(false, $mensajeAlerta, null);
-
         } elseif (isset($_POST['modificar'])) {
-
-            if($modificado) {
-                configurarAlerta($modificado, 'Se ha modificado el producto correctamente.', 10000);
-            } else {
-                configurarAlerta($modificado, 'No se ha podido modificar el producto.', 10000);
-            }
-
+            configurarAlerta($modificado, $mensajeAlerta, 10000);
         }
     ?>
 </body>
