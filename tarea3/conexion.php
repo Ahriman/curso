@@ -7,7 +7,7 @@
     $user = "gestor";
     $pass = "secreto";
     $charset = "utf8mb4"; // Soporta emojis 😲 https://codigofacilito.com/articulos/emojis_mysql
-    $dsn = "mycsql:host=$host;dbname=$db;charset=$charset";
+    $dsn = "mysql:host=$host;dbname=$db;charset=$charset";
 
     try {
         $conexion = new PDO($dsn, $user, $pass);
