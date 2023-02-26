@@ -5,6 +5,7 @@
         Para la familia nos aparecerá un "select" con los nombres de las familias de los productos para 
         elegir uno (lógicamente aunque mostremos los nombres por formulario enviaremos el código).
     */
+
     
     $insertado = false;
     $mensajeAlerta = false;
@@ -20,46 +21,36 @@
 
             require('conexion.php');
 
+            if(!isset($conexion)){
+                header('Location: listado.php');
+            }
+
             $consultaSQL = 'INSERT INTO productos (nombre, nombre_corto, pvp, familia, descripcion) 
                                 VALUES (:nombre, :nombre_corto, :precio, :familia, :descripcion)';
-                                
-            if(isset($conexion)) {
 
-                try {
-                    $stmt = $conexion->prepare($consultaSQL);
-                    $stmt->bindParam(":nombre", $nombre);
-                    $stmt->bindParam(":nombre_corto", $nombre_corto);
-                    $stmt->bindParam(":precio", $precio);
-                    $stmt->bindParam(":familia", $familia);
-                    $stmt->bindParam(":descripcion", $descripcion);
-                    $stmt->execute();
-                    if ($stmt->rowCount() == 1) {
-                        $insertado = true;
-                        $mensajeAlerta = 'Se ha añadido el producto correctamente.';
-                    } else {
-                        $mensajeAlerta = 'No se ha podido añadido el producto.';
-                    }
-                    
-                } catch (PDOException $e) {
-                    $mensajeAlerta = miGestorDeErrores('ERROR SQL', null, $e->getCode());
-                    $error = true;
-                } catch (Throwable $e) {
-                    echo "HOLI";
-                    $mensajeAlerta = miGestorDeErrores(E_ERROR, null, $e->getCode());
-                    $error = true;
-                    $errorConexionBD = true;
-                } finally {
-                    // Cerrar conexiones
-                    $stmt = null;
-                    $conexion = null;
+            try {
+                $stmt = $conexion->prepare($consultaSQL);
+                $stmt->bindParam(":nombre", $nombre);
+                $stmt->bindParam(":nombre_corto", $nombre_corto);
+                $stmt->bindParam(":precio", $precio);
+                $stmt->bindParam(":familia", $familia);
+                $stmt->bindParam(":descripcion", $descripcion);
+                $stmt->execute();
+                if ($stmt->rowCount() == 1) {
+                    $insertado = true;
+                    $mensajeAlerta = 'Se ha añadido el producto correctamente.';
+                } else {
+                    $mensajeAlerta = 'No se ha podido añadido el producto.';
                 }
-
-            } else {
-                $mensajeAlerta = miGestorDeErrores(E_ERROR, null, $e->getCode());
+                
+            } catch (PDOException $e) {
+                $mensajeAlerta = miGestorDeErrores('ERROR SQL', null, $e->getCode());
                 $error = true;
-                $errorConexionBD = true;
+            } finally {
+                // Cerrar conexiones
+                $stmt = null;
+                $conexion = null;
             }
-            
 
         }
         
@@ -68,6 +59,10 @@
     function mostrarSelectFamilias(&$mensajeAlerta, &$error) {
 
         require('conexion.php');
+
+        if(!isset($conexion)){
+            header('Location: listado.php');
+        }
 
         try {
 

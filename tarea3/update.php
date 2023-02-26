@@ -29,6 +29,10 @@
 
             require('conexion.php');
 
+            if(!isset($conexion)){
+                header('Location: listado.php');
+            }
+
             $consultaSQL = 'UPDATE productos 
                             SET nombre = :nombre, nombre_corto = :nombre_corto, pvp = :precio, familia = :familia, descripcion = :descripcion 
                             WHERE id = :id';

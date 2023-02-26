@@ -25,8 +25,6 @@
     } else {
         $conexionOk = false;
     }
-
-    
     
     function mostrarTabla($stmt){ ?>
 
