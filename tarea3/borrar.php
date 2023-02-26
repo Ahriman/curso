@@ -57,7 +57,8 @@
         <?php if ($borrado) : ?>
             <strong>Producto de Código: <?=$id?> Borrado correctamente.</strong>
         <?php else : ?>
-            <strong>No existe ningún producto con el ID <?=$id?>.</strong><!-- En caso de que se recargue la página (POST) -->
+            <!-- En caso de que se modifique el input hidden del HTML con un ID que no existe o se recargue la página (POST) -->
+            <strong>No existe ningún producto con el ID <?=$id?>.</strong>
         <?php endif ?>
         <a href="listado.php"><button type="button" class="btn btn-outline-dark btn-sm">Volver</button></a>
     </div>
