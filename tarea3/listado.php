@@ -52,7 +52,7 @@
                                 <a href="update.php?id=<?=$producto->id?>"><button type="button" class="btn btn-warning">Actualizar</button></a>
                                 <form method="POST" action="borrar.php" class="form-inline ms-2">
                                     <input type="hidden" value="<?=$producto->id?>" name="id" />
-                                    <button type="submit" class="btn btn-danger">Borrar</button>
+                                    <button type="submit" class="btn btn-danger" onclick="confirm('¿Está seguro de que desea borrar el producto?')">Borrar</button>
                                 </form>
                             </div>
                             
