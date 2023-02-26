@@ -13,7 +13,8 @@
             $conexionOk = true;
             $error = false;
             try {
-                $resultado = $conexion->query('SELECT id, nombre FROM productos ORDER BY nombre');
+                $stmt = $conexion->prepare('SELECT id, nombre FROM productos ORDER BY nombre');
+                $stmt->execute();
             } catch (PDOException $e) {
                 $mensajeAlerta = miGestorDeErrores('ERROR SQL', null, $e->getCode());
                 $error = true;
@@ -27,7 +28,7 @@
 
     
     
-    function mostrarTabla($resultado){ ?>
+    function mostrarTabla($stmt){ ?>
 
         <table class="table table-dark table-striped mt-2 text-center">
             <thead>
@@ -42,7 +43,7 @@
                 </tr>
                 <?php
                 
-                while ($producto = $resultado->fetchObject()) : ?>
+                while ($producto = $stmt->fetchObject()) : ?>
                     <tr>
                         <td><a href="detalle.php?id=<?=$producto->id?>"><button type="button" class="btn btn-info text-white">Detalle</button></a></td>
                         <td><?=$producto->id?></td>
@@ -51,7 +52,7 @@
                             <div class="d-inline-flex">
                                 <a href="update.php?id=<?=$producto->id?>"><button type="button" class="btn btn-warning">Actualizar</button></a>
                                 <form method="POST" action="borrar.php" class="form-inline ms-2">
-                                    <input type="hidden" value="<?=$producto->id?>" name="id" />
+                                    <input type="hidden" value="<?=$producto->id?>" name="id" /><!-- Se envía el código de producto -->
                                     <button type="submit" class="btn btn-danger" onclick="confirm('¿Está seguro de que desea borrar el producto?')">Borrar</button>
                                 </form>
                             </div>
@@ -59,7 +60,7 @@
                         </td>
                     </tr>
                 <?php endwhile;
-                
+                    $stmt = null;
                 ?>
             </tbody>
         </table>
@@ -92,7 +93,7 @@
             require('js/alerta.php');
             if($conexionOk) {
                 if(!$error) {
-                    mostrarTabla($resultado);
+                    mostrarTabla($stmt);
                 } else {
                     configurarAlerta(false, $mensajeAlerta, null);
                 }
