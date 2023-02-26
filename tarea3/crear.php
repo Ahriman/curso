@@ -56,17 +56,18 @@
 
         try {
 
-            $resultado = $conexion->query('SELECT * FROM familias ORDER BY nombre');
+            $stmt = $conexion->prepare('SELECT * FROM familias ORDER BY nombre');
+            $stmt->execute();
 
-            if ($resultado) { ?>
+            ?>
             
                 <select class="form-select" id="familia" name="familia">
-                    <?php while ($familia = $resultado->fetchObject()) : ?>
+                    <?php while ($familia = $stmt->fetchObject()) : ?>
                         <option value="<?=$familia->cod?>"><?=$familia->nombre?></option>
                     <?php endwhile ?>
                 </select>
     
-            <?php }
+            <?php 
 
         } catch (PDOException $e) {
             echo '<br>Error al ejecutar la consulta de selección.';
