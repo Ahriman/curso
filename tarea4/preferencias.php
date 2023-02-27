@@ -1,12 +1,8 @@
 <?php 
 
     session_start();
-    // https://www.php.net/manual/es/function.ob-end-flush.php
-    ob_end_flush(); // Deshabilitar buffer de salida. No usar en servidor de producción TODO: Eliminar
 
-    $idiomas = ['Español', 'Inglés', 'Ruso', 'Galego'];
-    $perfil = ['Si', 'No'];
-    $zonas = ['GMT-2', 'GMT-1', 'GMT', 'GMT+1', 'GMT+2'];
+    require('datos.inc.php');
 
 ?>
 
@@ -16,13 +12,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- BootStrap CDN -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" 
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <!-- FontAwesome CDN -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" 
-        integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous"/>
     <title>Tarea Unidad 4</title>
+    <?php require('css/links_cdns.inc.php') ?>
+    <style>
+        body {
+            background: silver;
+        }
+    </style>
 </head>
 <body>
     <?php
@@ -38,7 +34,7 @@
         <div class="d-flex justify-content-center h-100">
             <div class="card" style="width: 30rem">
                 <div class="card-header">
-                    <h3><i class="fa-sharp fa-solid fa-user-gear"></i><i class="fa-thin fa-user-gear"></i> Preferencias Usuario</h3>
+                    <h3><i class="fa-sharp fa-solid fa-user-gear"></i><i class="fa-thin fa-user-gear"></i>Preferencias Usuario</h3>
                 </div>
 
                 <div class="card-body p-4">
@@ -50,8 +46,9 @@
 
                     <form method="POST" name="preferencias">
 
-                        <label for="idioma" class="mt-2">Idioma</label>
-                        <div class="input-group">
+                        <!-- Los datos que se almacenan en $_SESSION son enteros -->
+                        <label for="idioma">Idioma</label>
+                        <div class="input-group mt-2">
                             <span class="input-group-text"><i class="fas fa-language"></i></span>
                             <select class="form-control form-select" name="idioma" id="id">
                                 <?php foreach($idiomas as $clave => $valor) : 
@@ -65,7 +62,7 @@
                         </div>
 
                         <label for="perfil" class="mt-3">Perfil Público</label>
-                        <div class="input-group">
+                        <div class="input-group mt-2">
                             <span class="input-group-text"><i class="fas fa-users"></i></span>
                             <select class="form-control form-select" name="perfil" id="perfil">
                                 <?php foreach($perfil as $clave => $valor) : 
@@ -79,7 +76,7 @@
                         </div>
 
                         <label for="zona" class="mt-3">Zona Horaria</label>
-                        <div class="input-group">
+                        <div class="input-group mt-2">
                             <span class="input-group-text"><i class="far fa-clock"></i></span>
                             <select class="form-control form-select" name="zona" id="zona">
                                 <?php foreach($zonas as $clave => $valor) : 
