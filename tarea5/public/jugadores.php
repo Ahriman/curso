@@ -17,6 +17,7 @@
     $jugadores = (new Jugadores())->recuperarJugadores();
 
     $d->setStorPath($cache);
+    // $d->setStorPath(__DIR__.'/cache/');
 
     if(isset($_SESSION['mensaje'])) {
         $mensaje = $_SESSION['mensaje'];
