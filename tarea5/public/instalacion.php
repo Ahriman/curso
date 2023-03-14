@@ -9,7 +9,7 @@
     $cache = '../cache';
     $blade = new Blade($views, $cache); // TODO: Corregir problema array
 
-    $titulo = 'Install';
+    $titulo = 'Instalar';
     $encabezado = 'Instalación';
     echo $blade
             ->view()
