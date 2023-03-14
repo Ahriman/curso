@@ -14,6 +14,8 @@ return array(
     'Carbon\\Laravel\\ServiceProvider' => $vendorDir . '/nesbot/carbon/src/Carbon/Laravel/ServiceProvider.php',
     'Carbon\\Translator' => $vendorDir . '/nesbot/carbon/src/Carbon/Translator.php',
     'Carbon\\Upgrade' => $vendorDir . '/nesbot/carbon/src/Carbon/Upgrade.php',
+    'Clases\\Conexion' => $baseDir . '/src/Conexion.php',
+    'Clases\\Jugadores' => $baseDir . '/src/Jugadores.php',
     'Composer\\InstalledVersions' => $vendorDir . '/composer/InstalledVersions.php',
     'Doctrine\\Common\\Inflector\\Inflector' => $vendorDir . '/doctrine/inflector/lib/Doctrine/Common/Inflector/Inflector.php',
     'Doctrine\\Inflector\\CachedWordInflector' => $vendorDir . '/doctrine/inflector/lib/Doctrine/Inflector/CachedWordInflector.php',

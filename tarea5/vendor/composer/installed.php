@@ -3,7 +3,7 @@
         'name' => 'usuario/tarea5',
         'pretty_version' => 'dev-master',
         'version' => 'dev-master',
-        'reference' => 'f7e559cd408909911380987deb89cff8200bdf22',
+        'reference' => '3ca2d8b20c596b1be95c3ba682389a733b5487c5',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -214,7 +214,7 @@
         'usuario/tarea5' => array(
             'pretty_version' => 'dev-master',
             'version' => 'dev-master',
-            'reference' => 'f7e559cd408909911380987deb89cff8200bdf22',
+            'reference' => '3ca2d8b20c596b1be95c3ba682389a733b5487c5',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
