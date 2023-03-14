@@ -1,0 +1,28 @@
+{
+    "name": "usuario/tarea5",
+    "description": "Tarea 5 DWES",
+    "type": "project",
+    "license": "GPL",
+    "config": {
+        "optimize-autoloader": true,
+        "allow-plugins": {
+            "kylekatarnls/update-helper": true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Clases\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Marcos Sanmartín",
+            "email": "ahriman89@gmail.com"
+        }
+    ],
+    "require": {
+        "philo/laravel-blade": "^3.1",
+        "milon/barcode": "^6.0",
+        "fzaninotto/faker": "^1.5"
+    }
+}
