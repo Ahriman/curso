@@ -99,7 +99,7 @@
             $this->conexion = null; // TODO: ?
         }
 
-        public function borrarTodo() 
+        public function borrarTodo() // TODO: hacer static para acceder con Jugadores::borrarTodo();
         {
             $delete = 'DELETE FROM jugadores';
             $stmt = $this->conexion->prepare($delete);
