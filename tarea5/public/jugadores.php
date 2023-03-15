@@ -31,6 +31,3 @@
             ->make('vjugadores', compact('titulo', 'encabezado', 'jugadores', 'd'))
             ->render();
     }
-
-// TODO: No cerrar etiquera php ?
-?>

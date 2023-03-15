@@ -45,5 +45,3 @@
 
     header('Location: jugadores.php');
 
-// TODO: No cerrar etiquera php ?
-?>

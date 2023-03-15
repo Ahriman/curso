@@ -32,6 +32,3 @@
             ->make('vcrear', compact('titulo', 'encabezado'))
             ->render();
     }
-
-// TODO: No cerrar etiquera php ?
-?>

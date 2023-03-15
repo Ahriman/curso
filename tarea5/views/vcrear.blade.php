@@ -6,6 +6,7 @@
     {{$encabezado}}
 @endsection
 @section('contenido')
+    <!-- TODO: ARREGLAR BOOTSTRAP -->
     <form name="crear" method="POST" action="crearJugador.php">
         <div class="form-row">
             <div class="form-group col-md-6">
@@ -17,7 +18,6 @@
                 <input type="text" class="form-control" id="apellidos" placeholder="Apellidos" name="apellidos" required>
             </div>
         </div>
-
 
         <div class="form-row">
             <div class="form-group col-md-4">
@@ -44,8 +44,8 @@
                 @endif
             </div>
         </div>
-
-        {{-- Botonera --}}
+        
+        <!-- BOTONERA -->
         @if(!isset($codigo))
             <button type="button" onclick="return confirm('Debe generar un código de barras antes')" class="btn btn-primary mr-3" name="enviar">Crear</button>
         @else
@@ -64,5 +64,4 @@
             <p>{{ $error }}</p>
         </div>
     @endif
-    
 @endsection

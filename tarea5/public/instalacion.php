@@ -7,7 +7,7 @@
 
     $views = ['../views'];
     $cache = '../cache';
-    $blade = new Blade($views, $cache); // TODO: Corregir problema array
+    $blade = new Blade($views, $cache);
 
     $titulo = 'Instalar';
     $encabezado = 'Instalación';
@@ -16,7 +16,3 @@
             ->view()
             ->make('vinstalacion', compact('titulo', 'encabezado'))
             ->render();
-            
-
-// TODO: No cerrar etiquera php ?
-?>
