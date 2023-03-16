@@ -53,7 +53,7 @@
             @endif
 
             <input type="reset" value="Limpiar" class="btn btn-success me-3">
-            <a href="jugadores.php" class="btn btn-info me-3">Vovler</a>
+            <a href="jugadores.php" class="btn btn-info text-info me-3">Volver</a>
             <a href="generarCode.php" class="btn btn-secondary">
                 <i class="fas fa-barcode"></i> Generar Barcode
             </a>
