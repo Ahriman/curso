@@ -11,8 +11,9 @@
 
     $titulo = 'Instalar';
     $encabezado = 'Instalación';
-    // echo $blade->view()->make('hello')->render();
     echo $blade
             ->view()
             ->make('vinstalacion', compact('titulo', 'encabezado'))
             ->render();
+
+?>

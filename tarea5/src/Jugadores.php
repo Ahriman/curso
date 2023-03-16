@@ -5,11 +5,9 @@
     use PDO;
     use PDOException;
 
-    // use Clases\Conexion; // TODO: Eliminar
-
     class Jugadores extends Conexion
     {
-        private $id; // TODO: ?
+        //private $id;
         private $nombre;
         private $apellidos;
         private $dorsal;
@@ -49,14 +47,10 @@
             }
 
             if($stmt->rowCount() == 0) {
-                // $this->conexion = null;
                 return false;
             } else {
-                // $this->conexion = null;
                 return true;
             }
-
-            // $this->conexion = null;
         }
 
         public function existeBarcode($barcode) 
@@ -71,10 +65,8 @@
             }
 
             if($stmt->rowCount() == 0) {
-                $this->conexion = null;
                 return false;
             } else {
-                $this->conexion = null;
                 return true;
             }
         }
@@ -96,10 +88,10 @@
                 die('Error al insertar jugadores: ' . $ex->getMessage());
             }
 
-            $this->conexion = null; // TODO: ?
+            $this->conexion = null;
         }
 
-        public function borrarTodo() // TODO: hacer static para acceder con Jugadores::borrarTodo();
+        public function borrarTodo()
         {
             $delete = 'DELETE FROM jugadores';
             $stmt = $this->conexion->prepare($delete);
@@ -110,7 +102,7 @@
                 die('Error al borrar los jugadores: ' . $ex->getMessage());
             }
 
-            $this->conexion = null; // TODO: ?
+            $this->conexion = null;
         }
 
         public function tieneDatos() 
@@ -134,40 +126,27 @@
         }
 
         // Setters
-        /**
-         * Set the value of id
-         */
-        public function setId($id): self
-        {
-                $this->id = $id;
-
-                return $this;
-        }
 
         /**
          * Set the value of nombre
          */
-        public function setNombre($nombre): self
+        public function setNombre($nombre)
         {
-                $this->nombre = $nombre;
-
-                return $this;
+            $this->nombre = $nombre;
         }
 
         /**
          * Set the value of apellidos
          */
-        public function setApellidos($apellidos): self
+        public function setApellidos($apellidos)
         {
-                $this->apellidos = $apellidos;
-
-                return $this;
+            $this->apellidos = $apellidos;
         }
 
         /**
          * Set the value of dorsal
          */
-        public function setDorsal($dorsal): self
+        public function setDorsal($dorsal)
         {
                 $this->dorsal = $dorsal;
 
@@ -177,21 +156,17 @@
         /**
          * Set the value of posicion
          */
-        public function setPosicion($posicion): self
+        public function setPosicion($posicion)
         {
-                $this->posicion = $posicion;
-
-                return $this;
+            $this->posicion = $posicion;
         }
 
         /**
          * Set the value of barcode
          */
-        public function setBarcode($barcode): self
+        public function setBarcode($barcode)
         {
-                $this->barcode = $barcode;
-
-                return $this;
+            $this->barcode = $barcode;
         }
     }
     

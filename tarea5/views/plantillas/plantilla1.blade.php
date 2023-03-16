@@ -15,7 +15,7 @@
 <body style="background: #ff8a65">
     <div class="container mt-3">
         <h3 class="text-center mt-3 mb-3">@yield('encabezado')</h3>
-        @yield('contenido');
+        @yield('contenido')
     </div>
 </body>
 </html>

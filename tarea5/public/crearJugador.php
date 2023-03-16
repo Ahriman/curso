@@ -6,7 +6,7 @@
     use Clases\Jugadores;
 
     function error($text) {
-        $_SESSION['mensaje'] = $text;
+        $_SESSION['error'] = $text;
         header('Location: fcrear.php');
         die();
     }
@@ -21,10 +21,11 @@
         error('¡Nombre y apellidos deben contener algún caracter válido!');
     }
 
-    $jugador = new Jugadores(); // TODO: La función no devuelve nada
+    $jugador = new Jugadores();
     if($jugador->existeDorsal($dorsal)){
         $jugador = null; // Cierra la conexión a la base de datos
-        error('Ese dorsal ya está en uso');
+        error('Ese dorsal ya está en uso.');
+        header('Location: fcrear.php');
     }
     
 
@@ -45,3 +46,4 @@
 
     header('Location: jugadores.php');
 
+?>

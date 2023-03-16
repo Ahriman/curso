@@ -20,3 +20,5 @@
 
     $_SESSION['codigo'] = $code;
     header('Location: fcrear.php');
+
+?>

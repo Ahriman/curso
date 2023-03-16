@@ -15,7 +15,7 @@
 <body style="background: #ff8a65">
     <div class="container mt-3">
         <h3 class="text-center mt-3 mb-3"><?php echo $__env->yieldContent('encabezado'); ?></h3>
-        <?php echo $__env->yieldContent('contenido'); ?>;
+        <?php echo $__env->yieldContent('contenido'); ?>
     </div>
 </body>
 </html>

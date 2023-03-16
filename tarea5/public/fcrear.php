@@ -7,7 +7,7 @@
 
     $views = ['../views'];
     $cache = '../cache';
-    $blade = new Blade($views, $cache); // TODO: Corregir problema array
+    $blade = new Blade($views, $cache);
 
     $titulo = 'Nuevo';
     $encabezado = 'Crear jugador';
@@ -18,9 +18,10 @@
             ->view()
             ->make('vcrear', compact('titulo', 'encabezado', 'error'))
             ->render();
-            unset($_SESSION['error']); // Eliminar el error para evitar un bucle infinito
+            unset($_SESSION['error']);
     } else if (isset($_SESSION['codigo'])) {
         $codigo = $_SESSION['codigo'];
+        unset($_SESSION['codigo']);
         echo $blade
             ->view()
             ->make('vcrear', compact('titulo', 'encabezado', 'codigo'))
@@ -32,3 +33,5 @@
             ->make('vcrear', compact('titulo', 'encabezado'))
             ->render();
     }
+
+?>

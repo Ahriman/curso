@@ -7,7 +7,7 @@
     use Faker\Factory;
 
     // Borramos todos los datos de todos los jugadores de la base de datos
-    $jugador = (new Jugadores())->borrarTodo(); // TODO: La función no devuelve nada
+    (new Jugadores())->borrarTodo();
     $jugador = null;
 
     $faker = Factory::create('es_ES');
@@ -28,3 +28,4 @@
 
     header('Location: jugadores.php');
 
+?>

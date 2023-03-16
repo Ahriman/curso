@@ -34,8 +34,7 @@
             }
             return $this->conexion;
         }
-
-        // TODO: cerrarConexion() ???
+        
     }
 
 ?>

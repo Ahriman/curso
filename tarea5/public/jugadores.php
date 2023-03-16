@@ -9,7 +9,7 @@
 
     $views = ['../views'];
     $cache = '../cache';
-    $blade = new Blade($views, $cache); // TODO: Corregir problema array
+    $blade = new Blade($views, $cache);
 
     $d = new DNS1D();
     $titulo = 'Jugadores';
@@ -31,3 +31,5 @@
             ->make('vjugadores', compact('titulo', 'encabezado', 'jugadores', 'd'))
             ->render();
     }
+
+?>
